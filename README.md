@@ -39,6 +39,10 @@ voiceai-operacional/
 
 └── README.md
 
+└── LICENSE
+
+└── LICENSE.pt.md
+
 
 
 ---
