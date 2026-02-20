@@ -1,169 +1,192 @@
-# VoiceAI Operacional
+# VoiceAI Operacional 🎙️🤖  
+**Pipeline modular de Voice AI** para transcrição (Whisper), processamento com LLM (OpenAI) e síntese de voz humanizada (ElevenLabs) — com foco em aplicações operacionais, pesquisa e produção de conteúdo.
 
-Pipeline modular em Python que integra:
-
-- 🎙 Speech-to-Text (Whisper)
-- 🧠 Processamento com LLM (OpenAI)
-- 🔊 Síntese de voz humanizada (ElevenLabs)
-
-Aplicado a contextos de Segurança Pública e Saúde Ocupacional.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Ativo-success.svg)](#)
+[![Version](https://img.shields.io/badge/Version-1.0.0-informational.svg)](#)
 
 ---
 
-## 🚀 Funcionalidades
+## 🔥 O que este projeto faz
+A partir de um áudio de entrada (MP3/WAV), o sistema executa:
 
-- Transcrição automática de áudio
-- Geração de resposta contextual com LLM
-- Conversão da resposta em áudio (TTS)
-- Estrutura modular e organizada
+1. **STT — Speech-to-Text (Whisper)**  
+   Transcreve o áudio para texto.
+2. **LLM — Processamento inteligente (OpenAI)**  
+   Resume, organiza, responde ou transforma a transcrição conforme prompt.
+3. **TTS — Text-to-Speech (ElevenLabs)**  
+   Gera um áudio final com voz humanizada baseado na resposta do LLM.
 
 ---
 
-## 📁 Estrutura do Projeto
+## 🧠 Arquitetura (Visão Geral)
+
+Áudio (MP3/WAV)
+↓
+[Whisper - STT] → transcricao.txt
+↓
+[OpenAI - LLM] → resposta.txt (+ meta.json)
+↓
+[ElevenLabs - TTS] → resposta_elevenlabs.mp3
+
+
+---
+
+## 📁 Estrutura do projeto
 
 voiceai-operacional/
 
-│
+├─ core/
 
-├── core/ # Módulos principais (STT, LLM, TTS)
+│ ├─ stt.py # transcrição (Whisper)
 
-├── data/ # Arquivos de entrada
+│ ├─ llm.py # processamento (OpenAI)
 
-├── outputs/ # Resultados gerados
+│ └─ tts.py # narração (ElevenLabs)
 
-│
+├─ data/
 
-├── main.py # Orquestrador do pipeline
+│ ├─ raw/ # áudios originais (opcional)
 
-├── requirements.txt # Dependências do projeto
+│ ├─ input.wav # áudio padronizado (16kHz mono)
 
-└── README.md
+│ └─ logs/ # logs (se ativado)
 
-└── LICENSE
+├─ outputs/
 
-└── LICENSE.pt.md
+│ ├─ transcricao.txt
 
+│ ├─ resposta.txt
+
+│ ├─ resposta_elevenlabs.mp3
+
+│ └─ meta.json
+
+├─ main.py
+
+├─ requirements.txt
+
+├─ README.md
+
+├─ LICENSE
+
+└─ LICENSE.pt.md
 
 
 ---
 
-## ⚙️ Requisitos
+## ✅ Requisitos
+- Python **3.10+**
+- Conta/chave de API para:
+  - OpenAI (LLM)
+  - ElevenLabs (TTS)
 
-- Python 3.10+
-- pip
-- Conta na OpenAI
-- Conta na ElevenLabs
+> Obs.: Whisper pode rodar local dependendo do setup; no Colab ele roda tranquilo.
 
 ---
 
-## 🛠 Instalação
-
-### 1️⃣ Clone o repositório
+## ⚙️ Instalação (Windows / Linux / Mac)
+No terminal dentro da pasta do projeto:
 
 ```bash
-git clone https://github.com/matheusflorindo32/voiceai-operacional.git
-cd voiceai-operacional
+python -m venv .venv
+Windows
+.venv\Scripts\activate
+Linux/Mac
+source .venv/bin/activate
 
-2️⃣ Instale as dependências
+Instalar dependências:
 
 pip install -r requirements.txt
+🔐 Configurar variáveis de ambiente (.env)
 
-🔐 Configuração de Ambiente
+Crie um arquivo .env na raiz do projeto (ou copie .env.example):
 
-Crie um arquivo .env na raiz do projeto contendo:
+Exemplo:
 
-OPENAI_API_KEY= SUA_CHAVE_OPENAI
-ELEVEN_API_KEY= SUA_CHAVE_ELEVENLABS
+OPENAI_API_KEY=coloque_sua_chave_aqui
+ELEVENLABS_API_KEY=coloque_sua_chave_aqui
+ELEVENLABS_VOICE_ID=coloque_o_voice_id_aqui
+MODEL_NAME=gpt-4o-mini
 
-⚠️ Nunca envie o arquivo .env para o GitHub.
+Dica: NUNCA suba seu .env para o GitHub.
 
-▶️ Como Executar
+🎧 Como usar
 
-Coloque um áudio de entrada na pasta data/
+Coloque um áudio em data/
 
-Recomendado: .wav 16kHz mono
+Ideal: data/input.wav (16kHz mono)
 
-Execute:
+Se você tiver MP3, converta para WAV (16kHz mono)
 
-▶️ Como Executar
+Converter MP3 → WAV (16kHz mono) com FFmpeg
+ffmpeg -y -i "seu_audio.mp3" -ar 16000 -ac 1 "data/input.wav"
 
-1 . Coloque um áudio de entrada na pasta data/
-
-Recomendado: .wav 16kHz mono
-
-2 . Execute:
+Rode o pipeline:
 
 python main.py
+📤 Saídas geradas (outputs/)
 
-📥 Exemplo de Conversão de Áudio
+Após rodar, você terá:
 
-Se tiver um .mp3, converta para .wav:
+outputs/transcricao.txt → texto do áudio
 
-ffmpeg -y -i input.mp3 -ar 16000 -ac 1 input.wav
+outputs/resposta.txt → resultado processado pelo LLM
 
-📤 Saídas Geradas
+outputs/resposta_elevenlabs.mp3 → narração final
 
-Após execução, o sistema cria:
+outputs/meta.json → metadados do processamento
 
-outputs/transcricao.txt → Texto transcrito
+🧪 Exemplo de uso real
 
-outputs/resposta.txt → Resposta gerada pelo LLM
+Use este projeto para:
 
-outputs/resposta_elevenlabs.mp3 → Áudio final sintetizado
+transformar áudio de aula em resumo estruturado
 
-🧠 Arquitetura do Sistema
+gerar roteiro para vídeo
 
-Áudio de Entrada
-        ↓
-Whisper (STT)
-        ↓
-Texto Transcrito
-        ↓
-LLM (GPT)
-        ↓
-Resposta Inteligente
-        ↓
-ElevenLabs (TTS)
-        ↓
-Áudio Final
+produzir narração para conteúdo científico
 
-🔒 Boas Práticas
+criar “briefing operacional” a partir de gravação
 
-Utilize .gitignore para proteger segredos
+🎥 GIF demonstrativo (como adicionar)
 
-Nunca exponha chaves de API
+Você pode adicionar um GIF no README para ficar “top portfólio”.
 
-Revogue imediatamente qualquer chave vazada
+Como fazer (rápido):
 
-📈 Roadmap (Próximas Melhorias)
+Grave a tela rodando python main.py (10–15s)
 
-🔄 Processamento em lote (Batch)
+Windows: Win + G (Xbox Game Bar) ou ScreenToGif
 
-🌐 Interface Web (Streamlit/FastAPI)
+Converta o vídeo para GIF (ScreenToGif faz isso)
 
-📊 Logs estruturados
+Suba o arquivo em: assets/demo.gif
 
-☁ Deploy em ambiente cloud
+Adicione no README:
 
-🧪 Testes automatizados
+![Demo](assets/demo.gif)
+🛣️ Roadmap (próximas versões)
 
-🎯 Aplicações
+ Modo batch (processar vários áudios)
 
-Relatórios operacionais por voz
+ CLI profissional (--input, --output, --prompt)
 
-Análise tática de ocorrências
+ Logs estruturados + níveis (INFO/WARN/ERROR)
 
-Resumos automatizados de áudio
+ Dockerfile (rodar com 1 comando)
 
-Produção de conteúdo narrado técnico
+ Testes automatizados
 
 📄 Licença
 
-MIT License
+Este projeto é licenciado sob a MIT License.
+Veja: LICENSE
 
+Versão em português: LICENSE.pt.md
 
 👤 Autor
 
-Matheus Florindo
-Projeto desenvolvido para fins educacionais, pesquisa e portfólio profissional.
-
+Matheus Florindo de Deus Barboza Gonçalves
+GitHub: @matheusflorindo32
