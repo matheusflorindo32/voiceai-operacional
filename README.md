@@ -22,14 +22,23 @@ Aplicado a contextos de Segurança Pública e Saúde Ocupacional.
 ## 📁 Estrutura do Projeto
 
 voiceai-operacional/
+
 │
+
 ├── core/ # Módulos principais (STT, LLM, TTS)
+
 ├── data/ # Arquivos de entrada
+
 ├── outputs/ # Resultados gerados
+
 │
+
 ├── main.py # Orquestrador do pipeline
+
 ├── requirements.txt # Dependências do projeto
+
 └── README.md
+
 
 
 ---
@@ -52,7 +61,9 @@ git clone https://github.com/matheusflorindo32/voiceai-operacional.git
 cd voiceai-operacional
 
 2️⃣ Instale as dependências
+
 pip install -r requirements.txt
+
 🔐 Configuração de Ambiente
 
 Crie um arquivo .env na raiz do projeto contendo:
@@ -69,6 +80,14 @@ Coloque um áudio de entrada na pasta data/
 Recomendado: .wav 16kHz mono
 
 Execute:
+
+▶️ Como Executar
+
+1 . Coloque um áudio de entrada na pasta data/
+
+Recomendado: .wav 16kHz mono
+
+2 . Execute:
 
 python main.py
 
@@ -136,10 +155,11 @@ Produção de conteúdo narrado técnico
 
 📄 Licença
 
- MIT License
+MIT License
 
 
 👤 Autor
 
 Matheus Florindo
 Projeto desenvolvido para fins educacionais, pesquisa e portfólio profissional.
+
