@@ -1,0 +1,31 @@
+# Ambiente virtual
+.venv/
+venv/
+env/
+
+# Variáveis sensíveis
+.env
+
+# Outputs gerados automaticamente
+outputs/*.mp3
+outputs/*.wav
+outputs/*.txt
+outputs/*.json
+
+# Logs
+*.log
+data/logs/
+
+# Arquivos temporários
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
